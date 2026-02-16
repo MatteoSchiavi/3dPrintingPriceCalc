@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>body { background-color: #111827; color: #f3f4f6; font-family: sans-serif; }</style>
+</head>
+<body class="p-4 md:p-6 min-h-screen">
+
+    <nav class="flex justify-between items-center mb-8 bg-gray-800 p-4 rounded-xl border border-gray-700">
+        <div class="flex items-center gap-4">
+            <h1 class="text-xl font-bold text-white"><span class="text-indigo-500">Piacenza</span> Admin</h1>
+            <div class="h-6 w-px bg-gray-600"></div>
+            <a href="pricing.html" class="text-gray-400 hover:text-white px-3 py-1 transition">Calculator</a>
+            <a href="manager.html" class="text-white font-bold bg-gray-700 px-3 py-1 rounded">Project Manager</a>
+        </div>
+        <button onclick="clearAll()" class="text-xs text-red-400 hover:text-red-300">Clear All</button>
+    </nav>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 min-h-[500px]">
+            <h2 class="text-sm font-bold text-gray-400 uppercase mb-4 flex justify-between">
+                To Do <span id="count-todo" class="bg-gray-700 px-2 rounded text-white">0</span>
+            </h2>
+            <div id="col-todo" class="space-y-3"></div>
+            <button onclick="addManualJob()" class="w-full mt-4 py-3 border-2 border-dashed border-gray-600 text-gray-500 rounded-lg hover:border-gray-500 hover:text-gray-400">
+                + Add Manual Job
+            </button>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-4 border border-indigo-900/50 min-h-[500px]">
+            <h2 class="text-sm font-bold text-indigo-400 uppercase mb-4 flex justify-between">
+                Printing <span id="count-working" class="bg-indigo-900 px-2 rounded text-indigo-200">0</span>
+            </h2>
+            <div id="col-working" class="space-y-3"></div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-4 border border-green-900/50 min-h-[500px]">
+            <h2 class="text-sm font-bold text-green-400 uppercase mb-4 flex justify-between">
+                Completed <span id="count-done" class="bg-green-900 px-2 rounded text-green-200">0</span>
+            </h2>
+            <div id="col-done" class="space-y-3"></div>
+        </div>
+
+    </div>
+
+<script>
+    // LOAD PROJECTS
+    let projects = JSON.parse(localStorage.getItem('piacenza_projects') || "[]");
+
+    function render() {
+        // Clear Cols
+        document.getElementById('col-todo').innerHTML = '';
+        document.getElementById('col-working').innerHTML = '';
+        document.getElementById('col-done').innerHTML = '';
+        
+        let counts = { todo: 0, working: 0, done: 0 };
+
+        projects.forEach(p => {
+            counts[p.status]++;
+            const card = createCard(p);
+            document.getElementById(`col-${p.status}`).appendChild(card);
+        });
+
+        // Update Counts
+        document.getElementById('count-todo').innerText = counts.todo;
+        document.getElementById('count-working').innerText = counts.working;
+        document.getElementById('count-done').innerText = counts.done;
+    }
+
+    function createCard(p) {
+        const div = document.createElement('div');
+        div.className = "bg-gray-700 p-4 rounded-lg shadow border-l-4 " + 
+                        (p.status === 'todo' ? 'border-gray-500' : p.status === 'working' ? 'border-indigo-500' : 'border-green-500');
+        
+        let actions = '';
+        if(p.status === 'todo') {
+            actions = `<button onclick="move(${p.id}, 'working')" class="text-xs bg-indigo-600 px-2 py-1 rounded text-white">Start >></button>`;
+        } else if(p.status === 'working') {
+            actions = `<button onclick="move(${p.id}, 'done')" class="text-xs bg-green-600 px-2 py-1 rounded text-white">Finish >></button>`;
+        } else {
+            actions = `<button onclick="remove(${p.id})" class="text-xs text-red-400 hover:text-white">Delete</button>`;
+        }
+
+        div.innerHTML = `
+            <div class="flex justify-between items-start mb-1">
+                <h3 class="font-bold text-white text-sm">${p.name}</h3>
+                <span class="text-xs text-gray-400">${p.date}</span>
+            </div>
+            <div class="text-lg font-bold text-gray-200 mb-3">${p.price}</div>
+            <div class="flex justify-between items-center">
+                ${actions}
+            </div>
+        `;
+        return div;
+    }
+
+    // ACTIONS
+    function move(id, newStatus) {
+        const idx = projects.findIndex(p => p.id === id);
+        if(idx > -1) {
+            projects[idx].status = newStatus;
+            save();
+        }
+    }
+
+    function remove(id) {
+        if(confirm("Delete this job record?")) {
+            projects = projects.filter(p => p.id !== id);
+            save();
+        }
+    }
+
+    function addManualJob() {
+        const name = prompt("Job Name:");
+        if(name) {
+            projects.push({
+                id: Date.now(),
+                name: name,
+                price: "€--",
+                status: "todo",
+                date: new Date().toLocaleDateString()
+            });
+            save();
+        }
+    }
+
+    function clearAll() {
+        if(confirm("Clear ALL project history?")) {
+            localStorage.removeItem('piacenza_projects');
+            location.reload();
+        }
+    }
+
+    function save() {
+        localStorage.setItem('piacenza_projects', JSON.stringify(projects));
+        render();
+    }
+
+    // Init
+    render();
+</script>
+</body>
+</html>

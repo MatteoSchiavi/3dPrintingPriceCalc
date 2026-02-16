@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Pricing Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>body { background-color: #111827; color: #f3f4f6; font-family: sans-serif; }</style>
+</head>
+<body class="p-4 md:p-8">
+
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <div class="lg:col-span-8 space-y-6">
+        
+        <div class="flex justify-between items-center bg-gray-800 p-4 rounded-xl border border-gray-700">
+            <h2 class="text-xl font-bold text-white"><i class="fas fa-calculator mr-2 text-indigo-500"></i>Quote Engine</h2>
+            <div class="text-xs text-gray-400">Piacenza Config Loaded</div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Project Name</label>
+                    <input type="text" id="projName" placeholder="Client - Part Name" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded focus:border-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Material</label>
+                    <select id="matType" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded focus:border-indigo-500 outline-none">
+                        </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase text-indigo-400">Hours (per part)</label>
+                    <input type="number" id="hours" step="0.1" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase text-indigo-400">Grams (per part)</label>
+                    <input type="number" id="grams" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase text-green-400">Total Quantity</label>
+                    <input type="number" id="qty" value="1" class="w-full bg-gray-900 border border-green-600 text-white font-bold p-3 rounded focus:border-green-500">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Post-Pro (min)</label>
+                    <input type="number" id="postPro" value="5" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded focus:border-indigo-500">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4 pt-4 border-t border-gray-700">
+                <div class="flex-1">
+                    <label class="text-xs font-bold text-gray-500 uppercase">Difficulty</label>
+                    <select id="diff" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded mt-1">
+                        <option value="1">Standard (1.0x)</option>
+                        <option value="2">Medium/Supports (1.25x)</option>
+                        <option value="3">Complex/Risk (1.5x)</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3 bg-gray-900 px-4 rounded border border-gray-600">
+                    <input type="checkbox" id="rush" class="w-5 h-5 accent-red-500">
+                    <span class="text-sm font-bold text-red-400">RUSH (+50%)</span>
+                </div>
+                <div class="flex items-center gap-3 bg-gray-900 px-4 rounded border border-gray-600">
+                    <input type="checkbox" id="vat" checked class="w-5 h-5 accent-blue-500">
+                    <span class="text-sm text-gray-300">Apply VAT (22%)</span>
+                </div>
+            </div>
+
+            <button onclick="calculate()" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-lg shadow-lg transition active:scale-[0.99]">
+                CALCULATE QUOTE
+            </button>
+        </div>
+    </div>
+
+    <div class="lg:col-span-4">
+        <div id="receipt" class="bg-white text-gray-900 p-6 rounded-xl shadow-2xl h-full flex flex-col justify-between relative overflow-hidden">
+            
+            <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                <i class="fas fa-cube text-9xl"></i>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 uppercase tracking-wider mb-1">Quote Estimate</h3>
+                <p class="text-xs text-gray-400 mb-6" id="dateStr">Date: --</p>
+
+                <div class="text-center mb-8">
+                    <p class="text-xs text-gray-500 uppercase mb-1">Total Project Price</p>
+                    <div class="text-5xl font-black text-indigo-600 tracking-tight" id="totalPrice">€0.00</div>
+                    <p class="text-xs text-gray-400 mt-2" id="taxLabel">incl. VAT</p>
+                </div>
+
+                <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-lg mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-bold text-indigo-900">Per Unit Price</span>
+                        <span class="text-xl font-bold text-indigo-700" id="unitPrice">€0.00</span>
+                    </div>
+                    <div class="text-xs text-indigo-400 flex justify-between">
+                        <span>Setup Fee Spread:</span>
+                        <span id="setupSpreadVal">€5.00 / part</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-sm border-t pt-4">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Material Cost</span>
+                        <span class="font-mono font-medium" id="costMat">€0.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Machine & Energy</span>
+                        <span class="font-mono font-medium" id="costMach">€0.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Labor & Setup</span>
+                        <span class="font-mono font-medium" id="costLab">€0.00</span>
+                    </div>
+                    <div class="flex justify-between pt-2 border-t mt-2">
+                        <span class="font-bold text-green-600">Net Profit</span>
+                        <span class="font-mono font-bold text-green-600" id="profit">€0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="window.print()" class="w-full bg-gray-900 text-white font-bold py-3 rounded-lg mt-6 hover:bg-gray-800 print:hidden">
+                <i class="fas fa-file-pdf mr-2"></i> Print / Save PDF
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+    // Initialize
+    const matSelect = document.getElementById('matType');
+    for (const [k, v] of Object.entries(CONFIG.MATERIALS)) {
+        let opt = document.createElement('option');
+        opt.value = k;
+        opt.innerText = `${k} (€${v.price}/kg)`;
+        matSelect.appendChild(opt);
+    }
+    document.getElementById('dateStr').innerText = new Date().toLocaleDateString('it-IT');
+
+    function calculate() {
+        // 1. Grab Inputs
+        const hours = parseFloat(document.getElementById('hours').value) || 0;
+        const grams = parseFloat(document.getElementById('grams').value) || 0;
+        const qty = parseInt(document.getElementById('qty').value) || 1;
+        const postProMin = parseFloat(document.getElementById('postPro').value) || 0;
+        const matKey = document.getElementById('matType').value;
+        const diffIndex = document.getElementById('diff').value;
+        const isRush = document.getElementById('rush').checked;
+        const applyVat = document.getElementById('vat').checked;
+
+        // 2. Load Configs
+        const mat = CONFIG.MATERIALS[matKey];
+        const energyRate = (CONFIG.ENERGY.PRINTER_WATTS/1000 * CONFIG.ENERGY.COST_KWH) 
+                           + CONFIG.ENERGY.WEAR_HOUR 
+                           + CONFIG.ENERGY.BUSY_TAX_HOUR;
+        
+        // 3. Calculate Variable Costs (Per Unit)
+        // Material: Weight * Price * Waste * Risk
+        const costVarMat = (grams/1000) * mat.price * mat.waste * mat.risk;
+        
+        // Machine: Time * (Energy + Wear + BusyTax)
+        const costVarMach = hours * energyRate;
+
+        // Labor: Post-Processing Time
+        const costVarLabor = (postProMin / 60) * CONFIG.LABOR.HOURLY_RATE;
+
+        // 4. Calculate Fixed Costs (Per Batch)
+        const costFixedSetup = CONFIG.LABOR.SETUP_FEE;
+
+        // 5. Total Production Cost
+        // (Variable * Qty) + Setup
+        const totalBaseCost = ((costVarMat + costVarMach + costVarLabor) * qty) + costFixedSetup;
+
+        // 6. Apply Multipliers (Rush / Difficulty)
+        const diffMult = CONFIG.MULTIPLIERS.DIFFICULTY[diffIndex];
+        const rushMult = isRush ? CONFIG.MULTIPLIERS.RUSH["2"] : 1.0;
+        
+        const costAdjusted = totalBaseCost * diffMult * rushMult;
+
+        // 7. Margin & Tax
+        const pricePreTax = costAdjusted * (1 + CONFIG.MARGIN);
+        const priceFinal = applyVat ? pricePreTax * (1 + CONFIG.VAT_RATE) : pricePreTax;
+
+        // 8. Update UI
+        document.getElementById('totalPrice').innerText = `€${priceFinal.toFixed(2)}`;
+        document.getElementById('unitPrice').innerText = `€${(priceFinal/qty).toFixed(2)}`;
+        
+        // Visualizing the "Spread"
+        // If Qty is 1, setup is €5.00. If Qty is 5, setup is €1.00/part.
+        document.getElementById('setupSpreadVal').innerText = `€${(costFixedSetup/qty).toFixed(2)} / part`;
+
+        // Breakdown Displays
+        document.getElementById('costMat').innerText = `€${(costVarMat * qty * diffMult).toFixed(2)}`;
+        document.getElementById('costMach').innerText = `€${(costVarMach * qty * diffMult).toFixed(2)}`;
+        document.getElementById('costLab').innerText = `€${((costFixedSetup + (costVarLabor * qty)) * diffMult).toFixed(2)}`;
+        
+        const netProfit = pricePreTax - costAdjusted;
+        document.getElementById('profit').innerText = `€${netProfit.toFixed(2)}`;
+        document.getElementById('taxLabel').innerText = applyVat ? "Includes 22% VAT" : "Excludes VAT";
+    }
+</script>
+</body>
+</html>

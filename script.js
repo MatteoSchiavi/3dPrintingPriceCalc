@@ -8,10 +8,10 @@ const CONFIG = {
     },
     RATES: {
         ENERGY_WEAR_HOUR: 0.18,  // €/hr (Piacenza Bill + Maintenance)
-        OPPORTUNITY_HOUR: 0.75,  // €/hr (Machine Locking Fee)
-        SETUP_FIXED: 5.00,       // € (Slicing/Handling)
+        OPPORTUNITY_HOUR: 0.50,  // €/hr (Machine Locking Fee)
+        SETUP_FIXED: 2.50,       // € (Slicing/Handling)
         MARGIN: 1.5,             // 50% Profit Buffer
-        WASTE_FACTOR: 1.2        // +20% filament for supports/brims
+        WASTE_FACTOR: 1,        // +20% filament for supports/brims
     }
 };
 

@@ -1,82 +1,44 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Quote Engine v3.0</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Piacenza 3D Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1631541909061-71e349d1f203?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <header class="no-print">
-            <h1>3D Service <span class="highlight">Piacenza</span></h1>
-            <p>Unified Pricing Interface</p>
-        </header>
+<body class="bg-gray-50 font-sans">
 
-        <main class="card">
-            <div class="inputs no-print">
-                <label>Project Reference</label>
-                <input type="text" id="projName" placeholder="e.g. Client_Part_001">
-
-                <div class="flex-row">
-                    <div class="flex-col">
-                        <label>Hours</label>
-                        <input type="number" id="h" step="0.5">
-                    </div>
-                    <div class="flex-col">
-                        <label>Grams</label>
-                        <input type="number" id="g">
-                    </div>
-                </div>
-
-                <label>Material Strategy</label>
-                <select id="mat">
-                    <option value="pla">Elegoo PLA (€15/kg)</option>
-                    <option value="petg">eSUN PETG (€18/kg)</option>
-                    <option value="custom">Custom...</option>
-                </select>
-
-                <div id="customGroup" class="hidden">
-                    <input type="text" id="cName" placeholder="Material Name">
-                    <input type="number" id="cPrice" placeholder="€ / kg">
-                </div>
-
-                <div class="flex-row">
-                    <div class="flex-col">
-                        <label>Difficulty</label>
-                        <select id="diff">
-                            <option value="1">Standard</option>
-                            <option value="1.3">High Detail</option>
-                            <option value="1.6">Extreme</option>
-                        </select>
-                    </div>
-                    <div class="flex-col">
-                        <label>Priority</label>
-                        <select id="rush">
-                            <option value="1">Standard (Next Available)</option>
-                            <option value="1.5">Rush (Immediate Start)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button id="mainBtn">Calculate Quote</button>
-            </div>
-
-            <div id="results" class="hidden">
-                <div class="result-header">
-                    <h2 id="outTitle">Quote</h2>
-                    <p id="outMeta"></p>
-                </div>
-                <div class="main-price" id="outTotal">€0.00</div>
-                <div class="list">
-                    <div class="item"><span>Technical Costs</span><span id="outTech"></span></div>
-                    <div class="item"><span>Rush/Difficulty Fees</span><span id="outFees"></span></div>
-                    <div class="item"><span>Opportunity/Setup</span><span id="outFix"></span></div>
-                </div>
-                <button class="no-print secondary-btn" onclick="window.print()">Export PDF</button>
-            </div>
-        </main>
+    <div class="hero-bg h-96 flex flex-col items-center justify-center text-center px-4">
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">Piacenza 3D Printing</h1>
+        <p class="text-xl text-gray-200 max-w-2xl">Professional FDM service for rapid prototyping and functional parts.</p>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+
+    <div class="max-w-2xl mx-auto -mt-20 relative z-10 px-4 pb-20">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-indigo-600 p-6 text-center">
+                <h2 class="text-2xl font-bold text-white"><i class="fas fa-file-upload mr-2"></i>Request a Quote</h2>
+                <p class="text-indigo-100 text-sm mt-2">
+                    Upload your project below. <br>
+                    <span class="font-bold text-white bg-indigo-500 px-2 py-1 rounded">You will receive a quote via email within 24h.</span>
+                </p>
+            </div>
+
+            <div class="p-8">
+                <form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    
+                    <input type="hidden" name="_subject" value="New 3D Print Request!">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://yourusername.github.io/thanks.html">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Your Name</label>
+                            <input type="text" name="

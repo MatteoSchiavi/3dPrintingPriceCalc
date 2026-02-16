@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Printing Quote - Piacenza 2026</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #d35400; --green: #27ae60; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { text-align: center; color: var(--primary); margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; color: #666; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 10px; }
+        .btn:hover { background: #1a252f; }
+        #output { margin-top: 25px; padding: 20px; border-radius: 8px; background: #eef9f1; border: 1px solid var(--green); display: none; text-align: center; }
+        .final-price { font-size: 2.2rem; font-weight: 800; color: var(--green); margin: 5px 0; }
+        .info { font-size: 0.75rem; color: #777; line-height: 1.4; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
+        
+        @media print {
+            .btn, .group, h2 { display: none; }
+            #output { display: block !important; border: none; background: white; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>3D Quote Tool</h2>
+    
+    <div class="group">
+        <label>Client Name / Project</label>
+        <input type="text" id="client" placeholder="e.g. Mario - Custom Gear">
+    </div>
+
+    <div class="group">
+        <label>Material</label>
+        <select id="mat" onchange="document.getElementById('custom-price').style.display = (this.value === 'custom' ? 'block' : 'none')">
+            <option value="16">Elegoo PLA (€16/kg)</option>
+            <option value="24">eSUN PETG (€24/kg)</option>
+            <option value="custom">Custom Material</option>
+        </select>
+        <input type="number" id="customPrice" placeholder="€ per kg" style="display:none; margin-top:10px;">
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+        <div class="group">
+            <label>Time (Hours)</label>
+            <input type="number" id="time" step="0.5">
+        </div>
+        <div class="group">
+            <label>Weight (Grams)</label>
+            <input type="number" id="grams">
+        </div>
+    </div>
+
+    <div class="group">
+        <label>Print Difficulty</label>
+        <select id="risk">
+            <option value="1">Standard (PLA)</option>
+            <option value="1.3">High (Complex/Supports/TPU)</option>
+        </select>
+    </div>
+
+    <button class="btn" onclick="calculate()">Generate Quote</button>
+
+    <div id="output">
+        <div id="out-name" style="font-weight:bold;"></div>
+        <div class="final-price" id="out-total">€0.00</div>
+        <div class="info" id="out-details"></div>
+        <button class="btn" style="background:#7f8c8d; font-size:0.8rem;" onclick="window.print()">Save as PDF</button>
+    </div>
+</div>
+
+<script>
+function calculate() {
+    const time = parseFloat(document.getElementById('time').value) || 0;
+    const grams = parseFloat(document.getElementById('grams').value) || 0;
+    const risk = parseFloat(document.getElementById('risk').value);
+    
+    let spool = document.getElementById('mat').value;
+    if(spool === 'custom') spool = parseFloat(document.getElementById('customPrice').value) || 0;
+
+    // --- PRICING LOGIC ---
+    // 1. Setup Fee (Covers slicing, cleaning, and risk for small quantities)
+    const setupFee = 5.00;
+
+    // 2. Running Costs (Electricity + Printer Wear)
+    // Energy cost Piacenza Feb 2026: ~€0.27/kWh bill-total. 
+    // Printer (100W) + maintenance = €0.20/hour.
+    const hourlyCost = time * 0.20;
+
+    // 3. Material (Grams + 20% waste buffer)
+    const materialCost = (grams / 1000) * spool * 1.2;
+
+    // 4. Profit Margin (1.5x)
+    const baseTotal = setupFee + ((hourlyCost + materialCost) * 1.5);
+    const finalPrice = baseTotal * risk;
+
+    // UI Update
+    document.getElementById('output').style.display = 'block';
+    document.getElementById('out-name').innerText = document.getElementById('client').value || "Print Quote";
+    document.getElementById('out-total').innerText = "€" + finalPrice.toFixed(2);
+    document.getElementById('out-details').innerHTML = `
+        Based on ${grams}g and ${time}h print time.<br>
+        Includes Piacenza energy rates (PUN Feb 2026) and maintenance.
+    `;
+}
+</script>
+
+</body>
+</html>

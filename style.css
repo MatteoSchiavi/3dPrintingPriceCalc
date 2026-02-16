@@ -1,0 +1,67 @@
+:root {
+    --primary: #1a1a1a;
+    --accent: #f39c12;
+    --success: #27ae60;
+    --bg: #f4f4f9;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 400px;
+}
+
+.accent { color: var(--accent); }
+
+label { font-size: 0.75rem; font-weight: bold; color: #888; text-transform: uppercase; }
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.row { display: flex; gap: 15px; }
+.col { flex: 1; }
+
+button {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover { background: var(--accent); }
+
+#output {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px dashed #eee;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.price-tag { font-size: 2.5rem; font-weight: 900; color: var(--success); }
+
+.hidden { display: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } }

@@ -3,151 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Quote Pro | Piacenza</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        @media print { .no-print { display: none; } #quote-output { border: none; box-shadow: none; width: 100%; } }
-    </style>
+    <title>3D Quote Engine v3.0</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-2xl mx-auto">
-        <header class="text-center mb-8 no-print">
-            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">3D Quote <span class="text-orange-600">Pro</span></h1>
-            <p class="text-gray-500 mt-2">Professional Pricing Engine • Piacenza, IT</p>
+<body>
+    <div class="container">
+        <header class="no-print">
+            <h1>3D Service <span class="highlight">Piacenza</span></h1>
+            <p>Unified Pricing Interface</p>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="glass-card p-6 rounded-2xl shadow-sm border border-gray-100 no-print">
-                <h2 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Print Details</h2>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Project Name</label>
-                        <input type="text" id="client" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-all" placeholder="e.g. Engine Gear V2">
-                    </div>
+        <main class="card">
+            <div class="inputs no-print">
+                <label>Project Reference</label>
+                <input type="text" id="projName" placeholder="e.g. Client_Part_001">
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Time (Hours)</label>
-                            <input type="number" id="hours" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none" placeholder="0.0">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Weight (g)</label>
-                            <input type="number" id="grams" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none" placeholder="0">
-                        </div>
+                <div class="flex-row">
+                    <div class="flex-col">
+                        <label>Hours</label>
+                        <input type="number" id="h" step="0.5">
                     </div>
+                    <div class="flex-col">
+                        <label>Grams</label>
+                        <input type="number" id="g">
+                    </div>
+                </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Material Brand</label>
-                        <select id="mat" onchange="toggleCustom()" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none appearance-none">
-                            <option value="16">Elegoo PLA (€16/kg)</option>
-                            <option value="25">eSUN PETG (€25/kg)</option>
-                            <option value="40">Specialty (TPU/CF) (€40/kg)</option>
-                            <option value="custom">Custom Price...</option>
+                <label>Material Strategy</label>
+                <select id="mat">
+                    <option value="pla">Elegoo PLA (€15/kg)</option>
+                    <option value="petg">eSUN PETG (€18/kg)</option>
+                    <option value="custom">Custom...</option>
+                </select>
+
+                <div id="customGroup" class="hidden">
+                    <input type="text" id="cName" placeholder="Material Name">
+                    <input type="number" id="cPrice" placeholder="€ / kg">
+                </div>
+
+                <div class="flex-row">
+                    <div class="flex-col">
+                        <label>Difficulty</label>
+                        <select id="diff">
+                            <option value="1">Standard</option>
+                            <option value="1.3">High Detail</option>
+                            <option value="1.6">Extreme</option>
                         </select>
-                        <input type="number" id="customPrice" class="hidden w-full mt-2 p-3 bg-orange-50 border border-orange-200 rounded-xl outline-none" placeholder="Enter €/kg">
                     </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Quantity</label>
-                        <input type="number" id="qty" value="1" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none">
+                    <div class="flex-col">
+                        <label>Priority</label>
+                        <select id="rush">
+                            <option value="1">Standard (Next Available)</option>
+                            <option value="1.5">Rush (Immediate Start)</option>
+                        </select>
                     </div>
-
-                    <button onclick="calculate()" class="w-full bg-gray-900 text-white font-bold py-4 rounded-xl hover:bg-orange-600 transform active:scale-95 transition-all shadow-lg shadow-gray-200">
-                        Generate Quote
-                    </button>
                 </div>
+
+                <button id="mainBtn">Calculate Quote</button>
             </div>
 
-            <div id="quote-output" class="hidden opacity-0 transform translate-y-4 transition-all duration-500">
-                <div class="bg-white p-8 rounded-2xl shadow-xl border-t-8 border-orange-500 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10">
-                        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.97 4.62c-.12.07-.27.1-.4.1-.14 0-.28-.03-.4-.1l-7.97-4.62c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.97-4.62c.12-.07.27-.1.4-.1.14 0 .28.03.4.1l7.97 4.62c.32.17.53.5.53.88v9z"/></svg>
-                    </div>
-                    
-                    <h3 class="text-sm font-bold text-orange-600 uppercase tracking-widest mb-1">Service Quote</h3>
-                    <h2 id="res-client" class="text-2xl font-black text-gray-900 mb-6">Project Name</h2>
-                    
-                    <div class="flex items-baseline mb-6">
-                        <span class="text-4xl font-black text-gray-900" id="res-total">€0.00</span>
-                        <span class="ml-2 text-gray-400 font-medium" id="res-unit-price"></span>
-                    </div>
-
-                    <div class="space-y-3 text-sm text-gray-600 mb-8">
-                        <div class="flex justify-between border-b border-gray-50 pb-2">
-                            <span>Material Cost</span>
-                            <span class="font-bold text-gray-900" id="det-mat">€0.00</span>
-                        </div>
-                        <div class="flex justify-between border-b border-gray-50 pb-2">
-                            <span>Energy & Wear</span>
-                            <span class="font-bold text-gray-900" id="det-energy">€0.00</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Local Surcharge (PI)</span>
-                            <span class="font-bold text-gray-900">Included</span>
-                        </div>
-                    </div>
-
-                    <button onclick="window.print()" class="no-print w-full bg-gray-100 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v5h10z"></path></svg>
-                        Save as PDF
-                    </button>
-                    
-                    <p class="mt-6 text-[10px] text-gray-400 text-center uppercase tracking-tighter">
-                        Prices valid for 7 days • Energy rate based on PUN Feb 2026
-                    </p>
+            <div id="results" class="hidden">
+                <div class="result-header">
+                    <h2 id="outTitle">Quote</h2>
+                    <p id="outMeta"></p>
                 </div>
+                <div class="main-price" id="outTotal">€0.00</div>
+                <div class="list">
+                    <div class="item"><span>Technical Costs</span><span id="outTech"></span></div>
+                    <div class="item"><span>Rush/Difficulty Fees</span><span id="outFees"></span></div>
+                    <div class="item"><span>Opportunity/Setup</span><span id="outFix"></span></div>
+                </div>
+                <button class="no-print secondary-btn" onclick="window.print()">Export PDF</button>
             </div>
-        </div>
+        </main>
     </div>
-
-    <script>
-        function toggleCustom() {
-            const isCustom = document.getElementById('mat').value === 'custom';
-            document.getElementById('customPrice').classList.toggle('hidden', !isCustom);
-        }
-
-        function calculate() {
-            const time = parseFloat(document.getElementById('hours').value) || 0;
-            const grams = parseFloat(document.getElementById('grams').value) || 0;
-            const qty = parseInt(document.getElementById('qty').value) || 1;
-            
-            let spoolPrice = document.getElementById('mat').value;
-            if(spoolPrice === 'custom') spoolPrice = parseFloat(document.getElementById('customPrice').value) || 0;
-
-            // Logic Breakdown:
-            // 1. Setup/Slicing: €5.00 flat fee (Small quantity protection)
-            const setupFee = 5.00;
-
-            // 2. Material: Weight * Spool price + 15% waste buffer (supports/brims)
-            const matCost = (grams / 1000) * spoolPrice * 1.15;
-
-            // 3. Energy: Piacenza PUN rate Feb 2026 is approx €0.11/kWh. 
-            // Total bill (oneri + tax) ≈ €0.26/kWh. 
-            // Most printers (100W) + machine wear ≈ €0.15/hour total running cost.
-            const hourlyRunning = time * 0.15;
-
-            // 4. Batch Logic: Setup is paid once, production costs scale with QTY.
-            // Profit margin is 50% (1.5x) to cover failed prints/taxes.
-            const baseUnitCost = (matCost + hourlyRunning) * 1.5;
-            const total = setupFee + (baseUnitCost * qty);
-
-            // UI Update
-            const output = document.getElementById('quote-output');
-            output.classList.remove('hidden');
-            setTimeout(() => {
-                output.classList.remove('opacity-0', 'translate-y-4');
-            }, 10);
-
-            document.getElementById('res-client').innerText = document.getElementById('client').value || "Unnamed Project";
-            document.getElementById('res-total').innerText = "€" + total.toFixed(2);
-            document.getElementById('res-unit-price').innerText = qty > 1 ? `(€${(total/qty).toFixed(2)} / unit)` : "";
-            document.getElementById('det-mat').innerText = "€" + (matCost * qty).toFixed(2);
-            document.getElementById('det-energy').innerText = "€" + (hourlyRunning * qty).toFixed(2);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

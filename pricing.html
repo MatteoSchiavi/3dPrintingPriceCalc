@@ -1,154 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Pricing Dashboard</title>
+    <title>PC3D Admin | Calcolatore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { background-color: #111827; color: #f3f4f6; font-family: sans-serif; }
-        /* Hide scrollbar for clean UI */
+        body { background-color: #0f172a; color: #f1f5f9; font-family: sans-serif; }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1f2937; }
-        ::-webkit-scrollbar-thumb { background: #4b5563; rounded: 4px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
     </style>
 </head>
-<body class="p-4 md:p-6 h-screen flex flex-col">
+<body class="p-4 md:p-6 h-screen flex flex-col overflow-hidden">
 
-    <nav class="flex justify-between items-center mb-6 bg-gray-800 p-4 rounded-xl border border-gray-700">
-        <div class="flex items-center gap-4">
-            <h1 class="text-xl font-bold text-white"><span class="text-indigo-500">Piacenza</span> Admin</h1>
-            <div class="h-6 w-px bg-gray-600"></div>
-            <a href="pricing.html" class="text-white font-bold bg-gray-700 px-3 py-1 rounded">Calculator</a>
-            <a href="manager.html" class="text-gray-400 hover:text-white px-3 py-1 transition">Project Manager</a>
+    <nav class="flex justify-between items-center mb-6 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg shrink-0">
+        <div class="flex items-center gap-5">
+            <h1 class="text-xl font-bold text-white tracking-wide"><span class="text-indigo-500">PC3D</span> Admin</h1>
+            <div class="h-6 w-px bg-slate-600"></div>
+            <a href="pricing.html" class="text-white font-bold bg-slate-700 px-4 py-2 rounded-lg text-sm shadow-inner">Calcolatore</a>
+            <a href="manager.html" class="text-slate-400 hover:text-white px-3 py-2 text-sm transition font-medium">Gestione Progetti</a>
         </div>
-        <button onclick="toggleSettings()" class="text-gray-400 hover:text-white transition">
+        <button onclick="toggleSettings()" class="text-slate-400 hover:text-white transition p-2 rounded-lg hover:bg-slate-700">
             <i class="fas fa-cog text-xl"></i>
         </button>
     </nav>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 overflow-hidden">
         
-        <div class="lg:col-span-8 overflow-y-auto pr-2">
-            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg">
-                <h2 class="text-lg font-bold text-indigo-400 mb-4 uppercase text-xs tracking-wider">Quote Parameters</h2>
+        <div class="lg:col-span-8 overflow-y-auto pr-2 pb-4">
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl">
+                <div class="flex items-center gap-2 mb-6 border-b border-slate-700 pb-4">
+                    <i class="fas fa-sliders-h text-indigo-400"></i>
+                    <h2 class="text-sm font-bold text-slate-300 uppercase tracking-widest">Parametri Stampa</h2>
+                </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
-                    <input type="text" id="projName" placeholder="Client Name / Part" class="bg-gray-900 border border-gray-600 text-white p-3 rounded focus:border-indigo-500 outline-none">
-                    <select id="matType" class="bg-gray-900 border border-gray-600 text-white p-3 rounded focus:border-indigo-500 outline-none">
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Nome Cliente / Progetto</label>
+                        <input type="text" id="projName" placeholder="Es. Mario - Supporto V2" class="w-full bg-slate-900 border border-slate-600 text-white p-3 rounded-lg focus:border-indigo-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Materiale</label>
+                        <select id="matType" class="w-full bg-slate-900 border border-slate-600 text-white p-3 rounded-lg focus:border-indigo-500 outline-none transition">
+                            </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-1 block text-indigo-300">Ore (Stampa)</label>
+                        <input type="number" id="hours" step="0.1" class="w-full bg-slate-900 border border-slate-600 text-white p-3 rounded-lg font-mono">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-1 block text-indigo-300">Grammi (Peso)</label>
+                        <input type="number" id="grams" class="w-full bg-slate-900 border border-slate-600 text-white p-3 rounded-lg font-mono">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-1 block text-green-400">Quantità</label>
+                        <input type="number" id="qty" value="1" class="w-full bg-slate-900 border border-green-600 text-white font-bold p-3 rounded-lg font-mono focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Post-Pro (min)</label>
+                        <input type="number" id="postPro" value="5" class="w-full bg-slate-900 border border-slate-600 text-white p-3 rounded-lg font-mono">
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 flex flex-wrap gap-4 items-center">
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">Difficoltà Stampa</label>
+                        <select id="diff" class="w-full bg-slate-800 border border-slate-600 text-white p-2 rounded">
+                            <option value="1">Standard (1.0x)</option>
+                            <option value="2">Media / Supporti (1.25x)</option>
+                            <option value="3">Estrema / Rischio (1.5x)</option>
                         </select>
-                </div>
-
-                <div class="grid grid-cols-4 gap-4 mb-6">
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase">Hours/Part</label>
-                        <input type="number" id="hours" step="0.1" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded">
                     </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase">Grams/Part</label>
-                        <input type="number" id="grams" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase text-green-400">Quantity</label>
-                        <input type="number" id="qty" value="1" class="w-full bg-gray-900 border border-green-600 text-white font-bold p-3 rounded">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 uppercase">Post-Pro(m)</label>
-                        <input type="number" id="postPro" value="5" class="w-full bg-gray-900 border border-gray-600 text-white p-3 rounded">
-                    </div>
-                </div>
-
-                <div class="flex flex-wrap gap-4 pt-4 border-t border-gray-700">
-                    <div class="flex-1">
-                        <select id="diff" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded">
-                            <option value="1">Difficulty: Standard</option>
-                            <option value="2">Difficulty: Medium</option>
-                            <option value="3">Difficulty: Extreme</option>
-                        </select>
-                    </div>
-                    <label class="flex items-center gap-2 bg-gray-900 px-4 rounded border border-gray-600 cursor-pointer">
-                        <input type="checkbox" id="rush" class="w-4 h-4 accent-red-500">
-                        <span class="text-sm font-bold text-red-400">RUSH</span>
+                    <label class="flex items-center gap-3 bg-slate-800 px-4 py-2 rounded border border-slate-600 cursor-pointer hover:bg-slate-700 transition">
+                        <input type="checkbox" id="rush" class="w-5 h-5 accent-red-500 rounded">
+                        <span class="text-sm font-bold text-red-400">URGENZA (+50%)</span>
                     </label>
-                    <label class="flex items-center gap-2 bg-gray-900 px-4 rounded border border-gray-600 cursor-pointer">
-                        <input type="checkbox" id="vat" checked class="w-4 h-4 accent-blue-500">
-                        <span class="text-sm text-gray-300">VAT (22%)</span>
+                    <label class="flex items-center gap-3 bg-slate-800 px-4 py-2 rounded border border-slate-600 cursor-pointer hover:bg-slate-700 transition">
+                        <input type="checkbox" id="vat" checked class="w-5 h-5 accent-blue-500 rounded">
+                        <span class="text-sm text-slate-300">Applica IVA (22%)</span>
                     </label>
                 </div>
 
-                <button onclick="calculate()" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-lg shadow-lg transition">CALCULATE</button>
+                <button onclick="calculate()" class="w-full mt-8 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-900/50 transition transform active:scale-[0.99] text-lg tracking-wide">
+                    CALCOLA PREVENTIVO
+                </button>
             </div>
         </div>
 
-        <div class="lg:col-span-4 h-full">
-            <div id="receipt" class="bg-white text-gray-900 p-6 rounded-xl shadow-2xl h-full flex flex-col relative">
-                <div class="absolute top-0 right-0 p-4 opacity-5"><i class="fas fa-cube text-8xl"></i></div>
+        <div class="lg:col-span-4 h-full pb-4">
+            <div id="receipt" class="bg-white text-slate-900 p-8 rounded-xl shadow-2xl h-full flex flex-col relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-6 opacity-5 pointer-events-none">
+                    <i class="fas fa-cube text-9xl"></i>
+                </div>
                 
-                <h3 class="text-lg font-bold text-gray-800 uppercase tracking-wider mb-6">Estimate</h3>
+                <h3 class="text-lg font-bold text-slate-800 uppercase tracking-widest mb-8 border-b border-slate-100 pb-4">
+                    Stima Costi
+                </h3>
                 
-                <div class="text-center mb-8 flex-1 flex flex-col justify-center">
-                    <p class="text-xs text-gray-500 uppercase">Total Quote</p>
-                    <div class="text-5xl font-black text-indigo-600 tracking-tight" id="totalPrice">€0.00</div>
-                    <p class="text-xs text-gray-400 mt-2" id="unitPrice">€0.00 / unit</p>
+                <div class="text-center mb-10 flex-1 flex flex-col justify-center">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-2">Totale Progetto</p>
+                    <div class="text-6xl font-black text-indigo-600 tracking-tighter" id="totalPrice">€0.00</div>
+                    <p class="text-sm text-slate-400 mt-2 font-medium" id="unitPrice">€0.00 / pezzo</p>
                 </div>
 
-                <div class="bg-gray-100 p-4 rounded-lg mb-6 text-xs text-gray-600 space-y-2">
-                    <div class="flex justify-between"><span>Material</span><span class="font-bold" id="costMat">€0.00</span></div>
-                    <div class="flex justify-between"><span>Machine</span><span class="font-bold" id="costMach">€0.00</span></div>
-                    <div class="flex justify-between"><span>Labor</span><span class="font-bold" id="costLab">€0.00</span></div>
-                    <div class="flex justify-between pt-2 border-t border-gray-300 text-green-600"><span>Profit</span><span class="font-bold" id="profit">€0.00</span></div>
+                <div class="bg-slate-50 p-5 rounded-xl mb-6 text-sm text-slate-600 space-y-3 border border-slate-100">
+                    <div class="flex justify-between"><span>Materiale</span><span class="font-bold font-mono" id="costMat">€0.00</span></div>
+                    <div class="flex justify-between"><span>Macchina & Energia</span><span class="font-bold font-mono" id="costMach">€0.00</span></div>
+                    <div class="flex justify-between"><span>Manodopera & Setup</span><span class="font-bold font-mono" id="costLab">€0.00</span></div>
+                    <div class="flex justify-between pt-3 border-t border-slate-200 text-green-600 text-base">
+                        <span class="font-bold">Margine Netto</span>
+                        <span class="font-bold font-mono" id="profit">€0.00</span>
+                    </div>
                 </div>
 
-                <button onclick="addToManager()" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg mb-2 hover:bg-green-500">
-                    <i class="fas fa-plus mr-2"></i> Add to Manager
-                </button>
-                <button onclick="window.print()" class="w-full bg-gray-900 text-white font-bold py-3 rounded-lg hover:bg-gray-800">
-                    Save PDF
-                </button>
+                <div class="space-y-3 mt-auto">
+                    <button onclick="addToManager()" class="w-full bg-green-600 text-white font-bold py-3.5 rounded-lg hover:bg-green-500 transition flex items-center justify-center gap-2 shadow-lg shadow-green-200">
+                        <i class="fas fa-plus"></i> Aggiungi al Manager
+                    </button>
+                    <button onclick="window.print()" class="w-full bg-slate-800 text-white font-bold py-3.5 rounded-lg hover:bg-slate-700 transition flex items-center justify-center gap-2">
+                        <i class="fas fa-file-pdf"></i> Salva PDF
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="settingsModal" class="fixed inset-0 bg-black/80 hidden z-50 flex justify-center items-center">
-        <div class="bg-gray-800 w-full max-w-lg p-6 rounded-xl border border-gray-700 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white">Edit Variables</h2>
-                <button onclick="toggleSettings()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+    <div id="settingsModal" class="fixed inset-0 bg-black/80 hidden z-50 flex justify-center items-center backdrop-blur-sm">
+        <div class="bg-slate-800 w-full max-w-lg p-8 rounded-2xl border border-slate-600 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-white">Configurazione Prezzi</h2>
+                <button onclick="toggleSettings()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
             </div>
             
-            <div class="space-y-4">
-                <h3 class="text-xs font-bold text-indigo-400 uppercase border-b border-gray-700 pb-1">Materials (€/kg)</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label class="text-xs text-gray-400">PLA</label><input type="number" id="set_pla" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
-                    <div><label class="text-xs text-gray-400">PETG</label><input type="number" id="set_petg" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
-                    <div><label class="text-xs text-gray-400">TPU</label><input type="number" id="set_tpu" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold text-indigo-400 uppercase border-b border-slate-700 pb-2 mb-3">Costo Materiali (€/kg)</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div><label class="text-xs text-slate-400 mb-1 block">PLA</label><input type="number" id="set_pla" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                        <div><label class="text-xs text-slate-400 mb-1 block">PETG</label><input type="number" id="set_petg" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                        <div><label class="text-xs text-slate-400 mb-1 block">ABS</label><input type="number" id="set_abs" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                    </div>
                 </div>
 
-                <h3 class="text-xs font-bold text-indigo-400 uppercase border-b border-gray-700 pb-1 pt-2">Machine & Energy</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label class="text-xs text-gray-400">Energy (€/kWh)</label><input type="number" id="set_energy" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
-                    <div><label class="text-xs text-gray-400">Wear (€/hr)</label><input type="number" id="set_wear" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
-                    <div><label class="text-xs text-gray-400">Busy Tax (€/hr)</label><input type="number" id="set_tax" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
+                <div>
+                    <h3 class="text-xs font-bold text-indigo-400 uppercase border-b border-slate-700 pb-2 mb-3">Macchina & Energia</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div><label class="text-xs text-slate-400 mb-1 block">Energia (€/kWh)</label><input type="number" id="set_energy" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                        <div><label class="text-xs text-slate-400 mb-1 block">Usura (€/h)</label><input type="number" id="set_wear" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                        <div><label class="text-xs text-slate-400 mb-1 block">Occupazione (€/h)</label><input type="number" id="set_tax" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                    </div>
                 </div>
 
-                <h3 class="text-xs font-bold text-indigo-400 uppercase border-b border-gray-700 pb-1 pt-2">Labor & Business</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label class="text-xs text-gray-400">Hourly Rate (€)</label><input type="number" id="set_labor" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
-                    <div><label class="text-xs text-gray-400">Setup Fee (€)</label><input type="number" id="set_setup" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
-                    <div><label class="text-xs text-gray-400">Margin (0.5 = 50%)</label><input type="number" id="set_margin" class="w-full bg-gray-900 border border-gray-600 text-white p-2 rounded"></div>
+                <div>
+                    <h3 class="text-xs font-bold text-indigo-400 uppercase border-b border-slate-700 pb-2 mb-3">Lavoro & Business</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div><label class="text-xs text-slate-400 mb-1 block">Oraria (€)</label><input type="number" id="set_labor" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                        <div><label class="text-xs text-slate-400 mb-1 block">Setup Fisso (€)</label><input type="number" id="set_setup" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                        <div><label class="text-xs text-slate-400 mb-1 block">Margine (0.5=50%)</label><input type="number" id="set_margin" class="w-full bg-slate-900 border border-slate-600 text-white p-2 rounded"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex gap-4 mt-8">
-                <button onclick="saveSettings()" class="flex-1 bg-green-600 text-white font-bold py-3 rounded hover:bg-green-500">Save Changes</button>
-                <button onclick="resetConfig()" class="bg-red-900 text-red-200 px-4 rounded hover:bg-red-800 text-sm">Reset</button>
+            <div class="flex gap-4 mt-10 border-t border-slate-700 pt-6">
+                <button onclick="saveSettings()" class="flex-1 bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-500 transition">Salva Modifiche</button>
+                <button onclick="resetConfig()" class="bg-red-900/50 text-red-200 px-6 rounded-lg hover:bg-red-900 transition text-sm font-bold">Reset</button>
             </div>
         </div>
     </div>
 
 <script src="config.js"></script>
 <script>
-    // INIT
+    // INIZIALIZZAZIONE
     const matSelect = document.getElementById('matType');
     for (const [k, v] of Object.entries(CONFIG.MATERIALS)) {
         let opt = document.createElement('option');
@@ -157,7 +183,7 @@
         matSelect.appendChild(opt);
     }
 
-    // CALCULATE LOGIC (Same as before, but using CONFIG object)
+    // LOGICA DI CALCOLO
     function calculate() {
         const hours = parseFloat(document.getElementById('hours').value) || 0;
         const grams = parseFloat(document.getElementById('grams').value) || 0;
@@ -171,22 +197,30 @@
         const mat = CONFIG.MATERIALS[matKey];
         const energyRate = (CONFIG.ENERGY.PRINTER_WATTS/1000 * CONFIG.ENERGY.COST_KWH) + CONFIG.ENERGY.WEAR_HOUR + CONFIG.ENERGY.BUSY_TAX_HOUR;
         
+        // Calcolo Variabili (Per Pezzo)
         const costVarMat = (grams/1000) * mat.price * mat.waste * mat.risk;
         const costVarMach = hours * energyRate;
         const costVarLabor = (postProMin / 60) * CONFIG.LABOR.HOURLY_RATE;
+        
+        // Costo Fisso (Per Lotto)
         const costFixedSetup = CONFIG.LABOR.SETUP_FEE;
         
+        // Totale Base
         const totalBaseCost = ((costVarMat + costVarMach + costVarLabor) * qty) + costFixedSetup;
+        
+        // Moltiplicatori
         const diffMult = CONFIG.MULTIPLIERS.DIFFICULTY[diffIndex];
         const rushMult = isRush ? CONFIG.MULTIPLIERS.RUSH["2"] : 1.0;
         
         const costAdjusted = totalBaseCost * diffMult * rushMult;
+        
+        // Prezzo Finale
         const pricePreTax = costAdjusted * (1 + CONFIG.MARGIN);
         const priceFinal = applyVat ? pricePreTax * (1 + CONFIG.VAT_RATE) : pricePreTax;
 
-        // UI Updates
+        // Aggiornamento UI
         document.getElementById('totalPrice').innerText = `€${priceFinal.toFixed(2)}`;
-        document.getElementById('unitPrice').innerText = `€${(priceFinal/qty).toFixed(2)} / unit`;
+        document.getElementById('unitPrice').innerText = `€${(priceFinal/qty).toFixed(2)} / pz`;
         
         document.getElementById('costMat').innerText = `€${(costVarMat * qty * diffMult).toFixed(2)}`;
         document.getElementById('costMach').innerText = `€${(costVarMach * qty * diffMult).toFixed(2)}`;
@@ -194,17 +228,16 @@
         document.getElementById('profit').innerText = `€${(pricePreTax - costAdjusted).toFixed(2)}`;
     }
 
-    // SETTINGS LOGIC
+    // GESTIONE IMPOSTAZIONI
     function toggleSettings() {
         const modal = document.getElementById('settingsModal');
         const isHidden = modal.classList.contains('hidden');
         modal.classList.toggle('hidden');
         
         if(isHidden) {
-            // Load current config into inputs
             document.getElementById('set_pla').value = CONFIG.MATERIALS.PLA.price;
             document.getElementById('set_petg').value = CONFIG.MATERIALS.PETG.price;
-            document.getElementById('set_tpu').value = CONFIG.MATERIALS.TPU.price;
+            document.getElementById('set_abs').value = CONFIG.MATERIALS.ABS.price;
             document.getElementById('set_energy').value = CONFIG.ENERGY.COST_KWH;
             document.getElementById('set_wear').value = CONFIG.ENERGY.WEAR_HOUR;
             document.getElementById('set_tax').value = CONFIG.ENERGY.BUSY_TAX_HOUR;
@@ -215,10 +248,9 @@
     }
 
     function saveSettings() {
-        // Update Config Object
         CONFIG.MATERIALS.PLA.price = parseFloat(document.getElementById('set_pla').value);
         CONFIG.MATERIALS.PETG.price = parseFloat(document.getElementById('set_petg').value);
-        CONFIG.MATERIALS.TPU.price = parseFloat(document.getElementById('set_tpu').value);
+        CONFIG.MATERIALS.ABS.price = parseFloat(document.getElementById('set_abs').value);
         CONFIG.ENERGY.COST_KWH = parseFloat(document.getElementById('set_energy').value);
         CONFIG.ENERGY.WEAR_HOUR = parseFloat(document.getElementById('set_wear').value);
         CONFIG.ENERGY.BUSY_TAX_HOUR = parseFloat(document.getElementById('set_tax').value);
@@ -226,27 +258,26 @@
         CONFIG.LABOR.SETUP_FEE = parseFloat(document.getElementById('set_setup').value);
         CONFIG.MARGIN = parseFloat(document.getElementById('set_margin').value);
         
-        // Save to LocalStorage
         saveConfig(CONFIG);
     }
 
-    // PROJECT MANAGER LINK
+    // AGGIUNGI AL MANAGER
     function addToManager() {
-        const name = document.getElementById('projName').value || "Unnamed Job";
+        const name = document.getElementById('projName').value || "Progetto Senza Nome";
         const price = document.getElementById('totalPrice').innerText;
         const job = {
             id: Date.now(),
             name: name,
             price: price,
-            status: "todo", // todo, working, done
-            date: new Date().toLocaleDateString()
+            status: "todo",
+            date: new Date().toLocaleDateString('it-IT')
         };
         
-        // Save to LocalStorage array
-        let projects = JSON.parse(localStorage.getItem('piacenza_projects') || "[]");
+        let projects = JSON.parse(localStorage.getItem('pc3d_projects') || "[]");
         projects.push(job);
-        localStorage.setItem('piacenza_projects', JSON.stringify(projects));
-        alert("Project added to Manager!");
+        localStorage.setItem('pc3d_projects', JSON.stringify(projects));
+        alert("Progetto aggiunto al Manager!");
+        window.location.href = "manager.html";
     }
 </script>
 </body>

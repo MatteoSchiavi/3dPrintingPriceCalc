@@ -1,16 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printing Price Calculator</title>
+    <title>PC3D | Servizio Stampa 3D Piacenza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.05;
+            background-image: radial-gradient(#6366f1 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
-<body>
-    <h1>Welcome to the 3D Printing Price Calculator!</h1>
-    <form action="https://matteoschiavi.github.io/3dPrintingPriceCalc/thanks.html" method="GET">
-        <label for="model">Enter the model:</label>
-        <input type="text" id="model" name="model" required>
-        <input type="submit" value="Calculate Price">
-    </form>
+<body class="bg-slate-50 font-sans text-slate-800">
+
+    <div class="hero-bg text-white pt-24 pb-48 px-4 relative">
+        <div class="hero-pattern"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 bg-indigo-500/10 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full mb-6 border border-indigo-500/20">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                Spediazione gratuita a Piacenza
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
+                PC<span class="text-indigo-500">3D</span> Printing
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Trasformiamo i tuoi file digitali in oggetti reali. Servizio di prototipazione rapida FDM professionale, preciso e locale.
+            </p>
+            <div class="flex flex-wrap justify-center gap-6 text-sm font-medium text-slate-400">
+                <span class="flex items-center"><i class="fas fa-check-circle text-indigo-500 mr-2"></i> PLA / PETG / ABS</span>
+                <span class="flex items-center"><i class="fas fa-bolt text-indigo-500 mr-2"></i> Consegna Rapida</span>
+                <span class="flex items-center"><i class="fas fa-file-invoice-dollar text-indigo-500 mr-2"></i> Preventivo in 24h</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-2xl mx-auto -mt-32 relative z-20 px-4 pb-24">
+        <div class="glass-card rounded-2xl shadow-2xl border border-slate-200/60 overflow-hidden">
+            <div class="p-8 md:p-10">
+                <div class="flex items-center gap-4 mb-8 border-b border-slate-100 pb-6">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-lg shadow-indigo-200">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Inizia il Progetto</h2>
+                        <p class="text-sm text-slate-500">Compila il modulo per ricevere una quotazione gratuita.</p>
+                    </div>
+                </div>
+
+                <form action="https://formsubmit.co/1matteoschiavi@gmail.com" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    
+                    <input type="hidden" name="_subject" value="Nuova Richiesta Stampa PC3D">
+                    <input type="hidden" name="_next" value="https://https://matteoschiavi.github.io//thanks.html"> <input type="hidden" name="_captcha" value="false">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Nome Completo</label>
+                            <input type="text" name="name" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3.5 focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition duration-200" placeholder="Mario Rossi">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Email (per il preventivo)</label>
+                            <input type="email" name="email" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3.5 focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition duration-200" placeholder="mario@email.com">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Materiale Preferito</label>
+                            <div class="relative">
+                                <select name="material" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3.5 appearance-none focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                                    <option value="Consiglio">Non so (Chiedo consiglio)</option>
+                                    <option value="PLA">PLA (Standard / Economico)</option>
+                                    <option value="PETG">PETG (Resistente / Meccanico)</option>
+                                    <option value="ABS">ABS (Alta temp / Tecnico)</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Livello Urgenza</label>
+                            <div class="relative">
+                                <select name="service_level" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3.5 appearance-none focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
+                                    <option value="Standard">Standard (3-5 Giorni)</option>
+                                    <option value="RUSH">⚡ RUSH (Priorità Massima)</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Note Aggiuntive</label>
+                        <textarea name="notes" rows="3" placeholder="Colore desiderato, riempimento (infill), o altre specifiche..." class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3.5 focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition duration-200"></textarea>
+                    </div>
+
+                    <div id="dropZone" class="border-2 border-dashed border-indigo-200 bg-indigo-50/30 rounded-xl p-8 text-center transition duration-300 hover:border-indigo-400 hover:bg-indigo-50 relative group cursor-pointer">
+                        <input type="file" id="fileInput" name="attachment" accept=".stl,.obj,.step,.gcode,.zip" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        
+                        <div id="fileContent" class="pointer-events-none">
+                            <div class="mb-4 text-indigo-500 group-hover:scale-110 transition-transform duration-300">
+                                <i id="fileIcon" class="fas fa-cloud-upload-alt text-4xl"></i>
+                            </div>
+                            <h3 id="fileText" class="font-bold text-slate-800 text-lg">Trascina qui il file o Clicca</h3>
+                            <p id="fileSubtext" class="text-sm text-slate-500 mt-1">Formati supportati: STL, OBJ, STEP (Max 25MB)</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-slate-200 transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2">
+                        <span>Invia Richiesta</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    
+                    <p class="text-center text-xs text-slate-400">
+                        <i class="fas fa-lock mr-1"></i> I tuoi file vengono inviati in modo sicuro solo per il preventivo.
+                    </p>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12 space-y-2">
+            <p class="text-slate-400 text-sm">&copy; 2026 PC3D Printing Service - Piacenza</p>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const fileIcon = document.getElementById('fileIcon');
+        const fileText = document.getElementById('fileText');
+        const fileSubtext = document.getElementById('fileSubtext');
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                const fileName = this.files[0].name;
+
+                // 1. Cambia il bordo e lo sfondo in verde
+                dropZone.classList.remove('border-indigo-200', 'bg-indigo-50/30');
+                dropZone.classList.add('border-green-400', 'bg-green-50');
+
+                // 2. Cambia l'icona in una spunta
+                fileIcon.className = "fas fa-check-circle text-4xl text-green-500 mb-2 transition-transform duration-300 scale-110";
+                
+                // 3. Mostra il nome del file
+                fileText.className = "font-bold text-green-700 text-lg";
+                fileText.innerText = fileName;
+                
+                // 4. Cambia il sottotitolo
+                fileSubtext.innerText = "File pronto per l'invio!";
+                fileSubtext.className = "text-sm text-green-600 mt-1 font-medium";
+            }
+        });
+    </script>
+
 </body>
 </html>
